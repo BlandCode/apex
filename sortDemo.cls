@@ -61,5 +61,42 @@ global class business implements Comparable{
 }
 
 private static testMethod void testSort(){
+    account a = new account();
+    a.name = 'Sample '+system.now();
+    a.AnnualRevenue = 5000;
+    insert a;
+    
+    task t = new task();
+    t.status = 'Completed';
+    t.ActivityDate = system.today();
+    t.whatid = a.id;
+    insert t;
+    
+    account a1 = new account();
+    a1.name = 'Sample '+system.now();
+    a1.AnnualRevenue = 10000;
+    insert a1;
+    
+    task t1 = new task();
+    t1.status = 'Completed';
+    t1.ActivityDate = system.today()-5;
+    t1.whatid = a1.id;
+    insert t1;
+    
+    list<business> sorted = getTopFifty();
+    system.assert(sorted[1].id==a.id);
+    
+    list<business> unsorted = getRandomFifty();
+    system.assert(unsorted[1].id==a.id);
+    
+    task t2 = new task();
+    t2.status = 'Completed';
+    t2.ActivityDate = system.today()+5;
+    t2.whatid = a1.id;
+    insert t2;
+    
+    sorted = getTopFifty();
+    system.assert(sorted[0].id==a1.id);
+    
 }
 }
